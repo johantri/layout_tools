@@ -31,11 +31,11 @@ from bpy.types import Panel, Operator
 bl_info = {
     "name": "OHA Layout Tools",
     "author": "Adhi Hargo, Johan Tri Handoyo",
-    "version": (1, 0, 3),
-    "blender": (2, 75, 0),
+    "version": (1, 0, 5),
+    "blender": (2, 79, 0),
     "location": "Sequencer > Tools > OHA Layout Tools",
     "description": "Create layout files.",
-    "warning": "",
+    "warning": "Use only for 2.79++",
     "wiki_url": "https://github.com/johantri/layout_tools",
     "tracker_url": "https://github.com/johantri/layout_tools/issues",
     "category": "Sequencer"}
@@ -469,7 +469,7 @@ class ExtractShotfiles_Base():
         render.filepath = self.render_filepath_vid
         render.display_mode = 'NONE'
 
-        image.file_format = "H264"
+        image.file_format = "FFMPEG"
 
         ffmpeg.format = 'QUICKTIME'
         ffmpeg.audio_codec = 'MP3'
@@ -557,7 +557,7 @@ class SEQUENCER_OT_ExtractShotfiles(ExtractShotfiles_Base, Operator):
             self.render_pre_handler(context)
             self.prev_stat = None
             if prefs.is_render_video:
-                bpy.ops.render.render('INVOKE_DEFAULT', animation=True)
+                bpy.ops.render.opengl(animation=True, sequencer=True)
             else:
                 bpy.ops.sound.mixdown('INVOKE_DEFAULT', filepath=self.render_filepath_aud,
                                       container='WAV', codec="PCM")
@@ -596,7 +596,7 @@ class SEQUENCER_OT_ExtractShotfiles(ExtractShotfiles_Base, Operator):
         if props.render_marker_infos:
             self.render_pre_handler(context)
             if prefs.is_render_video:
-                bpy.ops.render.render('INVOKE_DEFAULT', animation=True)
+                bpy.ops.render.opengl(animation=True, sequencer=True)
             else:
                 bpy.ops.sound.mixdown('INVOKE_DEFAULT', filepath=self.render_filepath_aud,
                                       container='WAV', codec="PCM")
